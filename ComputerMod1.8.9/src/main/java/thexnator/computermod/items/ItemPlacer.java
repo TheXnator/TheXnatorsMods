@@ -64,7 +64,7 @@ public class ItemPlacer extends Item
 
 					if (iblockstate1.getBlock() == this.block)
 					{
-						ItemBlock.setTileEntityNBT(world, pos, stack, player);
+						ItemBlock.setTileEntityNBT(world, player, pos, stack);
 						iblockstate1.getBlock().onBlockPlacedBy(world, pos, iblockstate1, player, stack);
 					}
 

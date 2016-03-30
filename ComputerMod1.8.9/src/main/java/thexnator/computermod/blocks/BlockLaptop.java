@@ -36,8 +36,8 @@ public class BlockLaptop extends BlockDirectional implements ITileEntityProvider
 	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 	public static final PropertyEnum TYPE = PropertyEnum.create("type", Type.class);
 	
-	public BlockLaptop(Material materialIn) {
-		super(materialIn);
+	public BlockLaptop() {
+		super(Material.iron);
 		setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TYPE, Type.BASE));
 	}
 	
@@ -45,6 +45,7 @@ public class BlockLaptop extends BlockDirectional implements ITileEntityProvider
 	public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, BlockPos pos)
 	{
 		setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+		super.setBlockBoundsBasedOnState(blockAccess, pos);
 	}
 	
 	@Override
@@ -52,7 +53,7 @@ public class BlockLaptop extends BlockDirectional implements ITileEntityProvider
 	{
 		int rotation = ((EnumFacing) state.getValue(FACING)).getHorizontalIndex();
 		float[] bounds = CollisionHelper.fixRotation(rotation, 0.875F, 0.0F, 1.0F, 1.0F);
-		setBlockBounds(bounds[0], 0.0F, bounds[1], bounds[2], 1.0F, bounds[3]);
+		setBlockBounds(0F, 0f, 0F, 1F, 0.6F, 1F);
 		super.addCollisionBoxesToList(world, pos, state, mask, list, collidingEntity);
 	}
 	
@@ -95,6 +96,17 @@ public class BlockLaptop extends BlockDirectional implements ITileEntityProvider
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumFacing side, float hitX, float hitY, float hitZ)
 	{
+		if(!world.isRemote){
+			if(player.isSneaking())
+			{
+				TileEntity tileEntity = world.getTileEntity(pos);
+				if(tileEntity instanceof TileEntityLaptop)
+				{
+					TileEntityLaptop laptop = (TileEntityLaptop) tileEntity;
+					laptop.openClose();
+				}
+			}
+		}
 //			if (world.isRemote) {
 //	            player.openGui(ComputerMod.instance, 0, world, (int) player.posX, (int) player.posY, (int) player.posZ);
 //	        }

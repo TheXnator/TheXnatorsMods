@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
@@ -15,12 +16,13 @@ import thexnator.computermod.blocks.BlockLaptop;
 import thexnator.computermod.init.ComputerBlocks;
 import thexnator.computermod.tileentity.TileEntityLaptop;
 
-public class LaptopRenderer extends TileEntitySpecialRenderer
+public class LaptopRenderer extends TileEntitySpecialRenderer<TileEntityLaptop>
 {
 	private Minecraft mc = Minecraft.getMinecraft();
+	private IBakedModel model = null;
 
 	@Override
-	public void renderTileEntityAt(TileEntity te, double x, double z, double y, float partialTicks, int destroyStage)
+	public void renderTileEntityAt(TileEntityLaptop te, double x, double y, double z, float partialTicks, int destroyStage)
 	{
 		IBlockState state = ComputerBlocks.laptop.getDefaultState().withProperty(BlockLaptop.TYPE, BlockLaptop.Type.SCREEN);
 		BlockPos pos = te.getPos();
@@ -29,15 +31,15 @@ public class LaptopRenderer extends TileEntitySpecialRenderer
 		GlStateManager.pushMatrix();
 		{
 			GlStateManager.translate(x, y, z);
-			GlStateManager.translate(0.5, 0.5, 0.5);
+			GlStateManager.translate(0.5, 0, 0.5);
 			GlStateManager.translate(-0.5, 0, -0.5);
+			GlStateManager.rotate(te.rotation + partialTicks, 1, 0, 0);
 			
 			GlStateManager.disableLighting();
 			
 			Tessellator tessellator = Tessellator.getInstance();
 			WorldRenderer renderer = tessellator.getWorldRenderer();
-			// THIS IS BROKEN >> renderer.begin(7, renderer.getVertexFormat());
-			renderer.startDrawing(7);
+			renderer.begin(7, DefaultVertexFormats.BLOCK);
 			renderer.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
 			
 			BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
@@ -46,6 +48,7 @@ public class LaptopRenderer extends TileEntitySpecialRenderer
 			
 			renderer.setTranslation(0.0D, 0.0D, 0.0D);
 			tessellator.draw();
+			
 			GlStateManager.enableLighting();
 		}
 		GlStateManager.popMatrix();

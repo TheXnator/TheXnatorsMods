@@ -13,16 +13,16 @@ public class GuiHandler implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (id == LAPTOP_GUI)
-	        return new GuiLaptop();
+//		if (id == LAPTOP_GUI)
+//	        return new GuiLaptop();
 		return null;
 	}
 
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (id == LAPTOP_GUI)
-	        return new GuiLaptop();
+//		if (id == LAPTOP_GUI)
+//	        return new GuiLaptop();
 	    return null;
 	}
 }

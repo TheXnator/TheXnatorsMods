@@ -1,6 +1,5 @@
 package thexnator.computermod;
 
-import minersbasic.api.network.PacketHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -15,6 +14,7 @@ import thexnator.computermod.handler.ConfigurationHandler;
 import thexnator.computermod.init.ComputerBlocks;
 import thexnator.computermod.init.ComputerItems;
 import thexnator.computermod.init.ComputerTileEntities;
+import thexnator.computermod.network.PacketHandler;
 import thexnator.computermod.proxy.CommonProxy;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
@@ -35,12 +35,13 @@ public class ComputerMod {
 		ComputerBlocks.register();
 		ComputerItems.init();
 		ComputerItems.register();
+		ComputerTileEntities.register();
 		
 		FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 
 		ConfigurationHandler.init(event.getSuggestedConfigurationFile());
 		
-		//PacketHandler.init();
+		PacketHandler.init();
 		
 		proxy.preInit();
 		
@@ -50,7 +51,6 @@ public class ComputerMod {
 	@EventHandler
     public void init(FMLInitializationEvent event)
     {
-		ComputerTileEntities.register();
 		proxy.registerRenders();
 		
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());

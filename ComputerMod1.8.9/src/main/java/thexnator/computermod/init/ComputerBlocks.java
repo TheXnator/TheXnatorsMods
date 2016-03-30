@@ -16,7 +16,7 @@ public class ComputerBlocks {
 
 	public static void init()
 	{
-		laptop = new BlockLaptop(Material.iron).setUnlocalizedName("laptop").setCreativeTab(ComputerMod.tabComputer);
+		laptop = new BlockLaptop().setUnlocalizedName("laptop").setCreativeTab(ComputerMod.tabComputer);
 	}
 	
 	public static void register()
